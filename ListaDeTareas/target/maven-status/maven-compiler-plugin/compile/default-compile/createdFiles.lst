@@ -1,0 +1,6 @@
+com\jd\listadetareas\ListaDeTareas.class
+com\jd\listadetareas\JAXRSConfiguration.class
+com\jd\listadetareas\resources\JavaEE8Resource.class
+com\jd\listadetareas\Usuarios.class
+servlets\SvRegistro.class
+servlets\SvInicioSesion.class
