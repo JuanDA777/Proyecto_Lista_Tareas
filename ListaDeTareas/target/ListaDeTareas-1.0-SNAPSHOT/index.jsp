@@ -24,7 +24,23 @@
 
         <div class="card bg-glass">
           <div class="card-body px-4 py-5 px-md-5">
-            <form action="SvInicioSesion" method="post">     
+            <form action="SvInicioSesion" method="post">
+                
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;" id="errorAlert">
+                    Datos incorrectos o usuario no existente. Vuelva a intentarlo.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;" id="registroSuccessAlert">
+                    ¡Registro exitoso! El usuario se añadio al sistema.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;" id="registroErrorAlert">
+                    La cedula ingresada ya esta registrada a un usuario existente. Vuelva a intentarlo con otro numero de cedula.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>  
+                
               <!-- Email input -->
               <div class="form-outline mb-4">
                   <input type="text" id="cedula" name="cedula" class="form-control" required=""/>
@@ -92,4 +108,33 @@
     </div>
 </div>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obtén la alerta por su ID
+        const registroErrorAlert = document.getElementById('registroErrorAlert');
+
+        // Verifica si hay un parámetro de alerta en la URL (por ejemplo, '?alert=registro-error')
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('alert') && urlParams.get('alert') === 'registro-error') {
+            // Muestra la alerta de registro si el parámetro de alerta es 'registro-error'
+            registroErrorAlert.style.display = 'block';
+        }
+    });
+</script>
+
+<!-- JavaScript para mostrar la alerta de registro exitoso cuando sea necesario -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obtén la alerta por su ID
+        const registroSuccessAlert = document.getElementById('registroSuccessAlert');
+
+        // Verifica si hay un parámetro de alerta en la URL (por ejemplo, '?alert=registro-success')
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('alert') && urlParams.get('alert') === 'registro-success') {
+            // Muestra la alerta de registro exitoso si el parámetro de alerta es 'registro-success'
+            registroSuccessAlert.style.display = 'block';
+        }
+    });
+</script>
 <%@include file= "templates/footer.jsp" %>

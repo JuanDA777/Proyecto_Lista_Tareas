@@ -4,6 +4,7 @@
  */
 package servlets;
 
+import com.jd.listadetareas.ListaDeTareas;
 import com.jd.listadetareas.Usuarios;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,16 +70,40 @@ public class SvRegistro extends HttpServlet {
         String contraseña = request.getParameter("contraseña");
         System.out.println("contraseña: " + contraseña);
         
-        Usuarios nuevoUsuario = new Usuarios(usuario, cedula, contraseña);
+        ArrayList<Usuarios> misUsuarios = ListaDeTareas.cargarUsuario(getServletContext());
         
-        ArrayList<Usuarios> listaUsuarios = new ArrayList<>();
-                
-        listaUsuarios.add(nuevoUsuario);
-        
-        request.setAttribute("listaUsuarios", listaUsuarios);
-        
-        request.getRequestDispatcher("index.jsp").forward(request, response);
 
+        // Verificar si ya existe un usuario con la cédula proporcionada
+        boolean cedulaExistente = false;
+        for (Usuarios usuarios : misUsuarios) {
+            if (usuarios.getCedula().equals(cedula)) {
+                cedulaExistente = true;
+                break;
+            }
+        }
+        if (cedulaExistente) {
+            // Ya existe un usuario con esa cédula, muestra un mensaje de error
+            // En caso de un error en el registro, redirigir a la página de inicio con una alerta
+            response.sendRedirect("index.jsp?alert=registro-error");
+        } else {
+            // No existe un usuario con esa cédula, crea el nuevo usuario
+            // Crear un nuevo objeto Usuario y establecer los valores
+            Usuarios nuevoUsuario = new Usuarios();
+            nuevoUsuario.setCedula(cedula);
+            nuevoUsuario.setUsuario(usuario);
+            nuevoUsuario.setContraseña(contraseña);
+
+            // Agregar el nuevo usuario a la lista de usuarios
+            misUsuarios.add(nuevoUsuario);
+
+            // Guardar la lista de usuarios en el archivo usuarios.txt
+            ListaDeTareas.guardarUsuario(misUsuarios, getServletContext());
+
+            // Redireccionar a la página web destino
+            response.sendRedirect("index.jsp?alert=registro-success");
+            
+            
+        }
     }
 
     /**
