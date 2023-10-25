@@ -73,4 +73,23 @@ public class ListaDeTareas {
         return darUsuarios;
     }
     
+    public static String inicioSesion(String cedula, String contraseña, ServletContext context) throws IOException {
+        // Cargar la lista de usuarios desde el archivo
+        ArrayList<Usuarios> usuarios = cargarUsuario(context);
+
+        // Iterar a través de la lista de usuarios y verificar las credenciales
+        for (Usuarios usuario : usuarios) {
+            if (usuario.getCedula().equals(cedula) && usuario.getContraseña().equals(contraseña)) {
+                // Las credenciales coinciden, usuario autenticado
+                System.out.println("El usuario a autenticar es:" + usuario.getUsuario());
+                return usuario.getUsuario(); // Devolver el nombre de usuario
+            }
+        }
+
+        // Si no se encontró ninguna coincidencia, el inicio de sesión falla
+        return null;
+    }
+    
+    
+    
 }

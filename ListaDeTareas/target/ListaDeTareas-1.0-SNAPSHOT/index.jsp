@@ -1,3 +1,4 @@
+<%@page import="com.jd.listadetareas.ListaEnlazada"%>
 <%@include file= "templates/header.jsp" %>
 <!-- Section: Design Block -->
 <section class="background-radial-gradient overflow-hidden">
@@ -27,17 +28,17 @@
             <form action="SvInicioSesion" method="post">
                 
                 <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;" id="errorAlert">
-                    Datos incorrectos o usuario no existente. Vuelva a intentarlo.
+                    Datos ingresados no validos. Vuelva a intentarlo.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
                 <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;" id="registroSuccessAlert">
-                    ¡Registro exitoso! El usuario se añadio al sistema.
+                    ¡Registro exitoso!.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
                 <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;" id="registroErrorAlert">
-                    La cedula ingresada ya esta registrada a un usuario existente. Vuelva a intentarlo con otro numero de cedula.
+                    La cedula ingresada ya esta registrada. Vuelva a intentarlo con una diferente.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>  
                 
@@ -89,7 +90,7 @@
                         <div class="mb-3 row">
                             <label for="cedula" class="col-sm-2 col-form-label">Cédula</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Ingresa la cédula" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                <input type="text" class="form-control" id="cedula" name="cedula" maxlength="12" placeholder="Ingresa la cédula" required pattern="[0-9]+" title="PENDEJO SOLO NUMEROS">
                             </div>
                         </div>
                     <div class="mb-3 row">
@@ -108,6 +109,15 @@
     </div>
 </div>
 
+<script>
+    function showTareaDetails(id, titulo, descripcion, fecha) {
+        var modal = $('#mostrarId');
+        modal.find('#tarea-id').text(id);
+        modal.find('#tarea-titulo').text(titulo);
+        modal.find('#tarea-descripcion').text(descripcion);
+        modal.find('#tarea-fecha').text(fecha);
+    }
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -134,6 +144,21 @@
         if (urlParams.has('alert') && urlParams.get('alert') === 'registro-success') {
             // Muestra la alerta de registro exitoso si el parámetro de alerta es 'registro-success'
             registroSuccessAlert.style.display = 'block';
+        }
+    });
+</script>
+
+<script>
+    // JavaScript para mostrar la alerta cuando sea necesario
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obtén la alerta por su ID
+        const errorAlert = document.getElementById('errorAlert');
+
+        // Verifica si hay un parámetro de alerta en la URL (por ejemplo, '?alert=error')
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('alert') && urlParams.get('alert') === 'error') {
+            // Muestra la alerta si el parámetro de alerta es 'error'
+            errorAlert.style.display = 'block';
         }
     });
 </script>

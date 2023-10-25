@@ -4,7 +4,6 @@
  */
 package servlets;
 
-import com.jd.listadetareas.ListaDeTareas;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author juand
  */
-@WebServlet(name = "SvInicioSesion", urlPatterns = {"/SvInicioSesion"})
-public class SvInicioSesion extends HttpServlet {
+@WebServlet(name = "SvEliminar", urlPatterns = {"/SvEliminar"})
+public class SvEliminar extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,6 +30,19 @@ public class SvInicioSesion extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet SvEliminar</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet SvEliminar at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,23 +71,8 @@ public class SvInicioSesion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Se recibe la informacion ingresada desde index.jsp
-        System.out.println("---INFORMACION DESDE SvInicioSesion---");
-        String cedula = request.getParameter("cedula");
-        System.out.println("cedula: " + cedula);
-        String contraseña = request.getParameter("contraseña");
-        System.out.println("contraseña: " + contraseña);
         
-        String usuarioAutenticado = ListaDeTareas.inicioSesion(cedula, contraseña, getServletContext());
-
-        if (usuarioAutenticado != null) {
-            // Las credenciales son válidas, puedes redireccionar al usuario a la página deseada
-            request.getSession().setAttribute("usuario", usuarioAutenticado);
-            response.sendRedirect("login.jsp");
-        } else {
-            // Las credenciales no son válidas, redirecciona a "index.jsp" con un parámetro de alerta
-            response.sendRedirect("index.jsp?alert=error");
-        }
+        
     }
 
     /**

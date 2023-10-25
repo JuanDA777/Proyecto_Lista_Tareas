@@ -1,6 +1,11 @@
 com\jd\listadetareas\ListaDeTareas.class
+com\jd\listadetareas\ListaEnlazada.class
 com\jd\listadetareas\JAXRSConfiguration.class
+servlets\SvAgregarTarea.class
 com\jd\listadetareas\resources\JavaEE8Resource.class
+com\jd\listadetareas\Tareas.class
+com\jd\listadetareas\ListaEnlazada$Nodo.class
 com\jd\listadetareas\Usuarios.class
+servlets\SvEliminar.class
 servlets\SvRegistro.class
 servlets\SvInicioSesion.class
