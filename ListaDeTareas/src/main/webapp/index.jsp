@@ -110,16 +110,7 @@
 </div>
 
 <script>
-    function showTareaDetails(id, titulo, descripcion, fecha) {
-        var modal = $('#mostrarId');
-        modal.find('#tarea-id').text(id);
-        modal.find('#tarea-titulo').text(titulo);
-        modal.find('#tarea-descripcion').text(descripcion);
-        modal.find('#tarea-fecha').text(fecha);
-    }
-</script>
-
-<script>
+    
     document.addEventListener("DOMContentLoaded", function () {
         // Obtén la alerta por su ID
         const registroErrorAlert = document.getElementById('registroErrorAlert');
@@ -131,10 +122,7 @@
             registroErrorAlert.style.display = 'block';
         }
     });
-</script>
-
-<!-- JavaScript para mostrar la alerta de registro exitoso cuando sea necesario -->
-<script>
+    
     document.addEventListener("DOMContentLoaded", function () {
         // Obtén la alerta por su ID
         const registroSuccessAlert = document.getElementById('registroSuccessAlert');
@@ -146,9 +134,7 @@
             registroSuccessAlert.style.display = 'block';
         }
     });
-</script>
-
-<script>
+    
     // JavaScript para mostrar la alerta cuando sea necesario
     document.addEventListener("DOMContentLoaded", function () {
         // Obtén la alerta por su ID
@@ -162,4 +148,5 @@
         }
     });
 </script>
+
 <%@include file= "templates/footer.jsp" %>

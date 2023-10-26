@@ -1,7 +1,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.jd.listadetareas.ListaEnlazada"%>
 <%@include file= "templates/header.jsp" %>
-
+<h6>Bienvenido <%= session.getAttribute("usuario")%>/<a href="index.jsp">Cerrar sesion</a></h6> 
 <div class="container p-4">
     <div class="row">
         <div class="col-md-4">
@@ -11,7 +11,7 @@
                     <div>
                         <label class="visually-hidden" for="id"></label>
                         <div class="input-group">
-                            <div class="input-group-text">id</div>
+                            <div class="input-group-text">Id</div>
                             <input type="text" class="form-control" id="id" name="id" required="">
                         </div>
                     </div><br>
@@ -29,7 +29,6 @@
                         <div class="input-group">
                             <div class="input-group-text">Descripcion:</div>
                             <textarea id="descripcion" name="descripcion" rows="5" cols="10" required=""></textarea>
-                            
                         </div>
                     </div><br>
                     
@@ -66,10 +65,10 @@
                             Antes de Tarea con ID:
                         </label>
                         <input type="text" name="idDespuesDe" id="idDespuesDe" placeholder="ID">
-                    </div>
+                    </div><br>
                     
                     <div>
-                        <input type="submit" value="Agregar tarea" class="form">
+                        <button type="submit" class="btn btn-primary">Agregar Tarea</button>
                     </div>
                 </form>
             </div>
@@ -130,14 +129,18 @@
                                 <td><%= current.tarea.getDescripcion()%></td>
                                 <td><%= current.tarea.getFecha()%></td>
                                 <td>
-                                    
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tareaModal"
-                               onclick="showTareaDetails(<%= current.tarea.getId()%>, '<%= current.tarea.getTitulo()%>', '<%= current.tarea.getDescripcion()%>', '<%= current.tarea.getFecha()%>')">
-                                <i class="fas fa-eye"></i> </a>
-                                    
                                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mostrarId" onclick="showTareaDetails(<%= current.tarea.getId()%>, '<%= current.tarea.getTitulo()%>', '<%= current.tarea.getDescripcion()%>', '<%= current.tarea.getFecha()%>')"><i class="fas fa-eye"></i></a> <!-- Icono de ventana modal -->
-                                    <a href="#" class="btn btn-danger" onclick="eliminarTarea(<%= current.tarea.getId()%>)"><i class="fas fa-trash-alt"></i></a>
-                                
+                                    
+                                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTareaModal"
+                                        data-id="<%= current.tarea.getId()%>"
+                                        data-titulo="<%= current.tarea.getTitulo()%>"
+                                        data-descripcion="<%= current.tarea.getDescripcion()%>"
+                                        data-fecha="<%= current.tarea.getFecha()%>">
+                                         <i class="fas fa-pencil-alt"></i>
+                                     </a>
+                                    
+                                    <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmacionModal" onclick="sacarId(<%= current.tarea.getId()%>)"><i class="fas fa-trash-alt"></i></a>
+                                    
                                 </td>
                                 
 
@@ -146,7 +149,11 @@
                                     current = current.siguiente;
                                 }
                             } else {
-                                out.println("No hay tareas disponibles.");
+                                %>
+                                    <tr>
+                                        <td colspan="5">No hay tareas disponibles</td>
+                                    </tr>
+                                <%
                             }
                         %>
                     </tbody>
@@ -164,7 +171,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h4 class="modal-title" id="staticBackdropLabel">Mostrar detalles de la tarea</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -181,15 +188,80 @@
         </div>
     </div>
 </div>
-<script>
-    function showTareaDetails(id, titulo, descripcion, fecha) {
-        var modal = $('#mostrarId');
-        modal.find('#tarea-id').text(id);
-        modal.find('#tarea-titulo').text(titulo);
-        modal.find('#tarea-descripcion').text(descripcion);
-        modal.find('#tarea-fecha').text(fecha);
-    }
-</script>
+
+<div class="modal fade" id="editarTareaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Editar Tarea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <form action="SvEditar" method="POST">
+                    
+                    <div>
+                        <label class="visually-hidden" for="id"></label>
+                        <div class="input-group">
+                            <div class="input-group-text">Id</div>
+                            <input type="text" class="form-control" id="id" name="id" required="">
+                        </div>
+                    </div><br>
+
+                    <div>
+                        <label class="visually-hidden" for="titulo"></label>
+                        <div class="input-group">
+                            <div class="input-group-text">Titulo:</div>
+                            <input type="text" class="form-control" id="titulo" name="titulo" required="">
+                        </div>
+                    </div><br>
+                    
+                    <div>
+                        <label class="visually-hidden" for="descripcion"></label>
+                        <div class="input-group">
+                            <div class="input-group-text">Descripcion:</div>
+                            <textarea id="descripcion" name="descripcion" rows="5" cols="10" required=""></textarea>
+                            
+                        </div>
+                    </div><br>
+                    
+                    <div>
+                        <label class="visually-hidden" for="fechavencimiento"></label>
+                        <div class="input-group">
+                            <div class="input-group-text">Fecha de vencimiento</div>
+                            <input type="date" class="form-control" id="fechavencimiento" name="fechavencimiento" required="">
+                        </div>
+                    </div><br>
+                    
+                    <!-- Botón para guardar cambios -->
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+                
+              </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmacionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Eliminar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro de que desea eliminar la tarea?
+              </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="eliminarTarea()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -198,6 +270,7 @@
     boolean listaVacia = (lista == null) || lista.verificarContenido();
 %>
 <script>
+    //
     var listaVacia = <%= listaVacia%>;
     var radios = document.querySelectorAll(".form-check-input");
     var labels = document.querySelectorAll(".form-check-label");
@@ -223,32 +296,32 @@
         idAntesDeInput.style.display = "block";
         idDespuesDeInput.style.display = "block";
     }
-</script>
-<script>
-    $('.eliminar').click(function() {
-    var nombre=$(this).data('elimniar');
-    $.ajax({
-        url: 'SvEliminar?nombre=' + nombre,
-        method: 'POST',
-        success: function () {
-                                                    
-        window.location.href = 'index.jsp';
-        },
-        error: function () {
-            
-             }
-        });
-    });
+    
+    //mostrar tareas
+    function showTareaDetails(id, titulo, descripcion, fecha) {
+        var modal = $('#mostrarId');
+        modal.find('#tarea-id').text(id);
+        modal.find('#tarea-titulo').text(titulo);
+        modal.find('#tarea-descripcion').text(descripcion);
+        modal.find('#tarea-fecha').text(fecha);
+    }
+    
+    //
+    var tareaId;
+
+    function sacarId(id) {
+        tareaId = id; // Guarda el id de la tarea para usarlo en la función eliminarTarea
+        console.log(tareaId);
+        console.log("funciona????");
+    }
+
+    function eliminarTarea() {
+        
+    location.href = "SvAgregarTarea?tipo=delete&id=" + tareaId;
+    tareaId = null;
+        
+    }
 </script>
 
-<!-- funcion para eliminar una tarea -->
-<script>
-    function eliminarTarea(id) {
-    if (confirm("¿Desea eliminar la tarea?")) {
-        // Si se confirma la eliminación, redirige al servlet para eliminar la tarea
-        location.href = "SvAgregarTarea?tipo=delete&id=" + id;
-    }
-}
-</script>
 
 <%@include file= "templates/footer.jsp" %>
