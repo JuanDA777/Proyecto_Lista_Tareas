@@ -96,7 +96,7 @@
                             </ul>
                         </li>
                         </ul>
-                        <form class="d-flex" action="SvPerro" method="GET">
+                        <form class="d-flex" action="SvAgregarTarea" method="GET">
                             <input class="form-control me-2" type="search" name="nombre" placeholder="ID" aria-label="ID">
                             <button class="btn btn-outline-success" type="submit">Buscar</button>
                         </form>
@@ -140,6 +140,7 @@
                                      </a>
                                     
                                     <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmacionModal" onclick="sacarId(<%= current.tarea.getId()%>)"><i class="fas fa-trash-alt"></i></a>
+                                    
                                     
                                 </td>
                                 
@@ -198,13 +199,13 @@
             </div>
             <div class="modal-body">
                 
-                <form action="SvEditar" method="POST">
+                <form action="SvEditarTarea" method="POST">
                     
                     <div>
                         <label class="visually-hidden" for="id"></label>
                         <div class="input-group">
                             <div class="input-group-text">Id</div>
-                            <input type="text" class="form-control" id="id" name="id" required="">
+                            <input type="text" class="form-control" id="id" name="id" required>
                         </div>
                     </div><br>
 
@@ -270,7 +271,6 @@
     boolean listaVacia = (lista == null) || lista.verificarContenido();
 %>
 <script>
-    //
     var listaVacia = <%= listaVacia%>;
     var radios = document.querySelectorAll(".form-check-input");
     var labels = document.querySelectorAll(".form-check-label");

@@ -221,6 +221,15 @@ public class ListaEnlazada {
             e.printStackTrace();
         }
     }
+    //Metodo que permite editar los datos de la Tarea con excepcion de la ID
+    public void editarTarea(int id, String nuevoTitulo, String nuevaDescripcion, String nuevaFecha) {
+        Nodo tareaExistente = localizarPorId(id);
 
-
+        if (tareaExistente != null) {
+            // Actualiza los atributos de la tarea
+            tareaExistente.tarea.setTitulo(nuevoTitulo);
+            tareaExistente.tarea.setDescripcion(nuevaDescripcion);
+            tareaExistente.tarea.setFecha(nuevaFecha);
+        }
+    }
 }
